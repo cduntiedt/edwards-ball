@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React from 'react';
 import LineChart from '../components/charts/plotly/LineChart';
+import StatCategorySelect from '../components/selects/StatCategorySelect';
 
 class Home extends React.Component {
     gameData = [];
@@ -38,6 +39,7 @@ class Home extends React.Component {
     render() { 
         return ( 
             <div>
+                <StatCategorySelect></StatCategorySelect>
                 <LineChart data={this.state.data} x={'GAME_DATE'} y={'PTS'} title={'Points'}></LineChart>
                 <LineChart data={this.state.data} x={'GAME_DATE'} y={'REB'} title={'Rebounds'}></LineChart>
                 <LineChart data={this.state.data} x={'GAME_DATE'} y={'AST'} title={'Assists'}></LineChart>
