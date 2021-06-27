@@ -3,6 +3,9 @@ import React from 'react';
 import "d3-time-format";
 
 class LineChart extends React.Component {
+    width = '100%';
+    height = 500;
+
     constructor(props) {
         super(props);
         this.state = {  }
@@ -76,6 +79,8 @@ class LineChart extends React.Component {
     }
 
     createLineChart(){
+        d3.selectAll('svg > *').remove();
+
         const node = this.node;
         const data = this.props.data;
         const x = this.props.x;
@@ -83,30 +88,30 @@ class LineChart extends React.Component {
         const width = this.props.width !== undefined ? this.props.width : 500;
         const height = this.props.height !== undefined ? this.props.height : 500;
 
-
         //verify the x and y coordinates exist
         if(data !== undefined && x !== undefined && y !== undefined){
-            data.forEach(d => {
-                d[x] = this.convertDate(d[x]);
-              });
+            data.forEach(player => {
+                player.games.forEach(game => {
+                    game[x] = this.convertDate(game[x]);
+                })
+            });
               
-
             //set chart margins
             const margin = { top: 50, right: 50, bottom: 50, left: 50 };
             
             //x min and max values
-            const xMinValue = d3.min(data, d => d[x]);
-            const xMaxValue = d3.max(data, d => d[x]);
+            const xMinValue = d3.min(data.map(d => d3.min(d.games.map(game => game[x]))));
+            const xMaxValue = d3.max(data.map(d => d3.max(d.games.map(game => game[x]))));
     
             //y min and max values
-            const yMinValue = d3.min(data, d => d[y]);
-            const yMaxValue = d3.max(data, d => d[y]);
+            const yMinValue = d3.min(data.map(d => d3.min(d.games.map(game => game[y]))));
+            const yMaxValue = d3.max(data.map(d => d3.max(d.games.map(game => game[y]))));
             
             // //set chart x axis scale
             // const xScale = d3.scaleLinear()
             //     .domain([xMinValue, xMaxValue])
             //     .range([0, width]);
-    
+
             const xScale = d3.scaleTime()
                 .domain([xMinValue, xMaxValue])
                 .range([0, width]);
@@ -122,9 +127,14 @@ class LineChart extends React.Component {
                 .y(d => yScale(d[y]))
                 .curve(d3.curveLinear)
 
+
             const svg = d3.select(node)
-                .attr('width', width + margin.left + margin.right)
-                .attr('height', height + margin.top + margin.bottom)
+                //.attr('width', width + margin.left + margin.right)
+                //.attr('height', height + margin.top + margin.bottom)
+                .attr("width", '100%')
+                .attr("height", '100%')
+                .attr('viewBox','0 0 '+ Math.min(this.width,this.height) + ' ' + Math.min(this.width,this.height))
+                .attr('preserveAspectRatio','xMinYMin')
                 .append('g')
                 .attr('transform', `translate(${margin.left},${margin.top})`);
     
@@ -158,20 +168,38 @@ class LineChart extends React.Component {
                 .attr('class', 'y-axis')
                 .call(d3.axisLeft(yScale));
             
-            //data lines
-            svg.append('path')
-                .datum(data)
-                .attr('fill', 'none')
-                .attr('stroke', '#f6c3d0')
-                .attr('stroke-width', 4)
-                .attr('class', 'line') 
-                .attr('d', line);
+
+            data.forEach(player => {
+                //data lines
+                svg.append('path')
+                    .datum(player.games)
+                    .attr('fill', 'none')
+                    .attr('stroke', player.color)
+                    .attr('stroke-width', 3)
+                    .style('opacity', 0.5)
+                    .attr('class', 'line') 
+                    .attr('d', line)
+                    .on('mouseover', function() {
+                        d3.select(this)
+                            .transition()
+                            .duration(500)
+                            .style('opacity', 1);
+                    })
+                    .on('mouseout', function() {
+                        d3.select(this)
+                            .transition()
+                            .duration(500)
+                            .style('opacity', 0.5);
+                    })
+            });
         }
     }
 
     render() { 
         return ( 
-            <svg ref={node => this.node = node}></svg>
+            <div width={this.width} height={this.height}>
+                <svg ref={node => this.node = node}></svg>
+            </div>
         );
     }
 }
