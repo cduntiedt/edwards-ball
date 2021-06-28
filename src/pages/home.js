@@ -1,7 +1,9 @@
 import axios from 'axios';
 import React from 'react';
+import { connect } from 'react-redux';
 import LineChart from '../components/charts/plotly/LineChart';
 import StatCategorySelect from '../components/selects/StatCategorySelect';
+import { getStatCategory } from '../state/selectors/StatCategorySelector';
 
 class Home extends React.Component {
     gameData = [];
@@ -37,17 +39,28 @@ class Home extends React.Component {
     }
 
     render() { 
+        let chart;
+
+        if (this.props.selectedCategory === undefined) {
+            chart = <div></div>;
+        } else {
+            chart = <LineChart 
+                data={this.state.data} x={'GAME_DATE'} 
+                y={this.props.selectedCategory.id} 
+                title={this.props.selectedCategory.text}/>;
+        }
+
         return ( 
             <div>
                 <StatCategorySelect></StatCategorySelect>
-                <LineChart data={this.state.data} x={'GAME_DATE'} y={'PTS'} title={'Points'}></LineChart>
-                <LineChart data={this.state.data} x={'GAME_DATE'} y={'REB'} title={'Rebounds'}></LineChart>
-                <LineChart data={this.state.data} x={'GAME_DATE'} y={'AST'} title={'Assists'}></LineChart>
-                <LineChart data={this.state.data} x={'GAME_DATE'} y={'STL'} title={'Steals'}></LineChart>
-                <LineChart data={this.state.data} x={'GAME_DATE'} y={'BLK'} title={'Blocks'}></LineChart>
+                {chart}
             </div> 
         );
     }
 }
- 
-export default Home;
+
+const mapStateToProps = state => ({
+    selectedCategory: getStatCategory(state)
+});
+
+export default connect(mapStateToProps)(Home);

@@ -1,10 +1,20 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { selectCategory } from '../../state/actions/StatCategoryAction';
 import {
     InputLabel,
     MenuItem,
     FormControl,
-    Select
+    Select,
+    withStyles
 } from '@material-ui/core';
+
+const useStyles = theme => ({
+    root: {
+        maxWidth: 200,
+        width: '100%'
+    },
+});
 
 class StatCategorySelect extends React.Component {
     constructor(props) {
@@ -41,12 +51,16 @@ class StatCategorySelect extends React.Component {
         this.setState({
             value: value
         });
+
+        let category = this.state.data.filter(cat => cat.id === value)[0];
+
+        this.props.dispatch(selectCategory(category));
     }
 
     render() { 
         return ( 
             <div>
-                <FormControl>
+                <FormControl className={this.props.classes.root}>
                     <InputLabel>Category</InputLabel>
                     <Select
                     value={this.state.value}
@@ -63,4 +77,4 @@ class StatCategorySelect extends React.Component {
     }
 }
  
-export default StatCategorySelect;
+export default connect()(withStyles(useStyles)(StatCategorySelect));

@@ -88,7 +88,9 @@ class LineChart extends React.Component {
         const x = this.props.x;
         const y = this.props.y;
         const data = this.props.data;
+        const title = this.props.title;
 
+        //update chart data
         if(data !== undefined){
             let traces = [];
 
@@ -104,10 +106,16 @@ class LineChart extends React.Component {
                         let gameIndex = i + 1;
                         return sum / gameIndex; 
                     }),
+                    text: sortedData.map(game => game[y]),
                     mode: 'lines',
                     line: {
                         color: player.color
-                    }
+                    },
+                    hovertemplate: 
+                        "<b>" + this.props.title + ":</b> %{text}<br>" +
+                        "<b>Date:</b> %{x}<br>" +
+                        "<b>Average:</b> %{y}<br>" +
+                        "<extra></extra>"
                 }
     
                 traces.push(trace);
@@ -116,6 +124,15 @@ class LineChart extends React.Component {
             this.setState({
                 data: traces
             })
+        }
+
+        //update chart title
+        if(title !== undefined){
+            this.setState({
+                layout: {
+                    title: title
+                }
+            });
         }
     }
 
