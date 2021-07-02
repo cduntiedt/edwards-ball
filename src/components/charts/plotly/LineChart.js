@@ -1,5 +1,8 @@
 import React from 'react';
 import Plot from 'react-plotly.js';
+import { connect } from 'react-redux';
+import { getPlayers } from '../../../state/selectors/PlayerSelector';
+import { loadPlayers } from '../../../state/thunks/PlayerThunks';
 
 class LineChart extends React.Component {
     constructor(props) {
@@ -14,6 +17,7 @@ class LineChart extends React.Component {
         }
 
         this.loadChart = this.loadChart.bind(this);
+        this.props.startLoadingPlayers();
     }
 
     convertDate(dt){
@@ -80,7 +84,10 @@ class LineChart extends React.Component {
     componentDidUpdate(prevProps){
         //if the props change, reload the chart
         if(prevProps !== this.props){
-            this.loadChart();
+            //TODO: debounce
+            setTimeout(() => {
+                this.loadChart();
+            },500);
         }
     }
 
@@ -89,6 +96,7 @@ class LineChart extends React.Component {
         const y = this.props.y;
         const data = this.props.data;
         const title = this.props.title;
+        const players = this.props.players;
 
         //update chart data
         if(data !== undefined){
@@ -99,7 +107,16 @@ class LineChart extends React.Component {
                 
                 let sortedData = player.games.sort((a,b)=> { return this.convertDate(a[x]) - this.convertDate(b[x]) });
 
+                // //need to use array of arrays for custom data
+                // var arrayData = sortedData.map(function(obj) {
+                //     return Object.keys(obj).sort().map(function(key) { 
+                //       return obj[key];
+                //     });
+                //   });
+
+
                 let trace = {
+                    name: players.filter(p => p['PERSON_ID'].toString() === player.id)[0]['DISPLAY_FIRST_LAST'],
                     x: sortedData.map(game => this.convertDate(game[x])),
                     y: sortedData.map((game, i) => { 
                         sum += game[y];
@@ -107,13 +124,15 @@ class LineChart extends React.Component {
                         return sum / gameIndex; 
                     }),
                     text: sortedData.map(game => game[y]),
+                    customdata: sortedData.map(game => game["MATCHUP"]),
                     mode: 'lines',
                     line: {
                         color: player.color
                     },
                     hovertemplate: 
-                        "<b>" + this.props.title + ":</b> %{text}<br>" +
                         "<b>Date:</b> %{x}<br>" +
+                        "<b>Matchup:</b> %{customdata}<br>" +
+                        "<b>" + this.props.title + ":</b> %{text}<br>" +
                         "<b>Average:</b> %{y}<br>" +
                         "<extra></extra>"
                 }
@@ -145,5 +164,13 @@ class LineChart extends React.Component {
         );
     }
 }
- 
-export default LineChart;
+
+const mapStateToProps = state => ({
+    players: getPlayers(state)
+});
+
+const mapDispatchToProps = dispatch => ({
+    startLoadingPlayers: () =>  dispatch(loadPlayers())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(LineChart);
