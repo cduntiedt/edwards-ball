@@ -10,9 +10,10 @@ class LineChart extends React.Component {
         this.state = { 
             data: [],
             layout: {
-                // width: 500,
-                // height: 500,
                 title: props.title
+            },
+            config: {
+                responsive: true
             }
         }
 
@@ -160,6 +161,8 @@ class LineChart extends React.Component {
             <Plot
                 data={this.state.data}
                 layout={this.state.layout}
+                config={this.state.config}
+                style={{ width:"100%", height: "100%" }}
             />
         );
     }

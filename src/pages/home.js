@@ -1,9 +1,15 @@
 import axios from 'axios';
 import React from 'react';
 import { connect } from 'react-redux';
+import { 
+    Grid,
+    Card,
+    CardContent
+} from '@material-ui/core';
 import LineChart from '../components/charts/plotly/LineChart';
 import StatCategorySelect from '../components/selects/StatCategorySelect';
 import { getStatCategory } from '../state/selectors/StatCategorySelector';
+import ShotChart from '../components/charts/plotly/ShotChart';
 
 class Home extends React.Component {
     gameData = [];
@@ -51,10 +57,24 @@ class Home extends React.Component {
         }
 
         return ( 
-            <div>
-                <StatCategorySelect></StatCategorySelect>
-                {chart}
-            </div> 
+            <Grid container spacing={1}>
+                <Grid item xs={12}>
+                    <Card>
+                        <CardContent>
+                            <StatCategorySelect></StatCategorySelect>
+                            {chart}
+                        </CardContent>
+                    </Card>
+                </Grid>
+
+                <Grid item xs={12}>
+                    <Card>
+                        <CardContent>
+                            <ShotChart></ShotChart>
+                        </CardContent>
+                    </Card>
+                </Grid>
+            </Grid>
         );
     }
 }
