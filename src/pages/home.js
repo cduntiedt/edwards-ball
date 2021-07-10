@@ -47,11 +47,12 @@ class Home extends React.Component {
     render() { 
         let chart;
 
-        if (this.props.selectedCategory === undefined) {
+        if (this.props.selectedCategory === undefined || this.props.selectedCategory === null) {
             chart = <div></div>;
         } else {
             chart = <LineChart 
-                data={this.state.data} x={'GAME_DATE'} 
+                data={this.state.data} 
+                x={'GAME_DATE'} 
                 y={this.props.selectedCategory.id} 
                 title={this.props.selectedCategory.text}/>;
         }

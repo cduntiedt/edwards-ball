@@ -14,7 +14,8 @@ class LineChart extends React.Component {
             },
             config: {
                 responsive: true
-            }
+            },
+            height: (typeof this.props.height === "undefined") ? "450px" : this.props.height
         }
 
         this.loadChart = this.loadChart.bind(this);
@@ -86,9 +87,12 @@ class LineChart extends React.Component {
         //if the props change, reload the chart
         if(prevProps !== this.props){
             //TODO: debounce
-            setTimeout(() => {
-                this.loadChart();
-            },500);
+            // setTimeout(() => {
+            //     this.loadChart();
+            // },1000);
+
+            this.loadChart();
+
         }
     }
 
@@ -162,7 +166,7 @@ class LineChart extends React.Component {
                 data={this.state.data}
                 layout={this.state.layout}
                 config={this.state.config}
-                style={{ width:"100%", height: "100%" }}
+                style={{ width:"100%", height: this.state.height }}
             />
         );
     }
