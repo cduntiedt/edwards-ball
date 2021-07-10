@@ -87,12 +87,9 @@ class LineChart extends React.Component {
         //if the props change, reload the chart
         if(prevProps !== this.props){
             //TODO: debounce
-            // setTimeout(() => {
-            //     this.loadChart();
-            // },1000);
-
-            this.loadChart();
-
+            setTimeout(() => {
+                this.loadChart();
+            },1000);
         }
     }
 
