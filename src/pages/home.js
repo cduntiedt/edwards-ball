@@ -4,12 +4,15 @@ import { connect } from 'react-redux';
 import { 
     Grid,
     Card,
-    CardContent
+    CardContent,
+    CardHeader
 } from '@material-ui/core';
 import LineChart from '../components/charts/plotly/LineChart';
 import StatCategorySelect from '../components/selects/StatCategorySelect';
 import { getStatCategory } from '../state/selectors/StatCategorySelector';
 import ShotChart from '../components/charts/plotly/ShotChart';
+import { getPlayers } from '../state/selectors/PlayerSelector';
+import { loadPlayers } from '../state/thunks/PlayerThunks';
 
 class Home extends React.Component {
     gameData = [];
@@ -17,6 +20,7 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {  }
+        this.props.startLoadingPlayers();
     }
 
     getGames(playerID, color){
@@ -68,20 +72,31 @@ class Home extends React.Component {
                     </Card>
                 </Grid>
 
-                <Grid item xs={12}>
-                    <Card>
-                        <CardContent>
-                            <ShotChart></ShotChart>
-                        </CardContent>
-                    </Card>
-                </Grid>
+                {this.props.players.map(player => {
+                    return <Grid item xs={6} key={player['PERSON_ID']} >
+                        <Card>
+                            <CardHeader
+                                title={player['DISPLAY_FIRST_LAST']}
+                                subheader={player['TEAM_CITY']}
+                            />
+                            <CardContent>
+                                <ShotChart></ShotChart>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                })}
             </Grid>
         );
     }
 }
 
 const mapStateToProps = state => ({
-    selectedCategory: getStatCategory(state)
+    selectedCategory: getStatCategory(state),
+    players: getPlayers(state)
 });
 
-export default connect(mapStateToProps)(Home);
+const mapDispatchToProps = dispatch => ({
+    startLoadingPlayers: () =>  dispatch(loadPlayers)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
