@@ -23,29 +23,34 @@ class Home extends React.Component {
         this.props.startLoadingPlayers();
     }
 
-    getGames(playerID, color){
-        //edwards game logs
-        axios.get('/data/' + playerID +  '/game-log.json')
-        .then(response => {
-            let d = {
-                id: playerID,
-                color: color,
-                games: response.data
-            };
-            this.gameData.push(d);
+    getGames(){
+        let players = this.props.players;
 
-            this.setState({
-                data: this.gameData
-            });
-        })
-        .catch(error => {
-            console.log(error);
+        players.forEach(player => {
+            let playerID = player['PERSON_ID'];
+            let color = player['LINE_COLOR'];
+
+            axios.get('/data/' + playerID +  '/game-log.json')
+                .then(response => {
+                    let d = {
+                        id: playerID,
+                        color: color,
+                        games: response.data
+                    };
+                    this.gameData.push(d);
+        
+                    this.setState({
+                        data: this.gameData
+                    });
+                })
+                .catch(error => {
+                    console.log(error);
+                });
         });
     }
 
     componentDidMount(){
-        this.getGames('1630162', '#78BE20');
-        this.getGames('1630163', '#00788C');
+        this.getGames();
     }
 
     render() { 

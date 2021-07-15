@@ -99,9 +99,8 @@ class LineChart extends React.Component {
         const data = this.props.data;
         const title = this.props.title;
         const players = this.props.players;
-
         //update chart data
-        if(data !== undefined){
+        if(data !== undefined && players !== undefined){
             let traces = [];
 
             data.forEach(player => {
@@ -116,9 +115,8 @@ class LineChart extends React.Component {
                 //     });
                 //   });
 
-
                 let trace = {
-                    name: players.filter(p => p['PERSON_ID'].toString() === player.id)[0]['DISPLAY_FIRST_LAST'],
+                    name: players.filter(p => p['PERSON_ID'] === player.id)[0]['DISPLAY_FIRST_LAST'],
                     x: sortedData.map(game => this.convertDate(game[x])),
                     y: sortedData.map((game, i) => { 
                         sum += game[y];

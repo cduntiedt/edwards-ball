@@ -33,7 +33,10 @@ class PlayerService {
                 "GAMES_PLAYED_FLAG": "Y",
                 "DRAFT_YEAR": "2020",
                 "DRAFT_ROUND": "1",
-                "DRAFT_NUMBER": "1"
+                "DRAFT_NUMBER": "1",
+                "PRIMARY_COLOR": "rgb(12, 35, 64)",
+                "SECONDARY_COLOR": "rgb(35, 97, 146)",
+                "LINE_COLOR": "#78BE20",
             },
             {
                 "PERSON_ID": 1630163,
@@ -67,7 +70,10 @@ class PlayerService {
                 "GAMES_PLAYED_FLAG": "Y",
                 "DRAFT_YEAR": "2020",
                 "DRAFT_ROUND": "1",
-                "DRAFT_NUMBER": "3"
+                "DRAFT_NUMBER": "3",
+                "PRIMARY_COLOR": "rgb(29,17,96)",
+                "SECONDARY_COLOR": "rgb(0,120,140)",
+                "LINE_COLOR": "#00788C",
             }
         ];
     }
