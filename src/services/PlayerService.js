@@ -1,5 +1,5 @@
 class PlayerService {
-    getPlayers = () => {
+    static getPlayers = () => {
         return [
             {
                 "PERSON_ID": 1630162,

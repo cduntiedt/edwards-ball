@@ -5,8 +5,7 @@ import {
 
 export const loadPlayers = () => async (dispatch, getState) => {
     try{
-        let playerService = new PlayerService();
-        dispatch(getPlayers(playerService.getPlayers()));
+        dispatch(getPlayers(PlayerService.getPlayers()));
     } catch (e) {
         console.log(e);
     }

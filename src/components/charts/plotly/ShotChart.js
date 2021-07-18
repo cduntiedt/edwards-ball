@@ -1,5 +1,10 @@
 import React from 'react';
 import Plot from 'react-plotly.js';
+import axios from 'axios';
+import {
+    primaryFont,
+    secondaryFont
+} from '../../../theme';
 
 class ShotChart extends React.Component {
     threept_break_y = 89.47765084
@@ -77,6 +82,11 @@ class ShotChart extends React.Component {
                     fixedrange: true,
                     //range: [-250, 250]
                     range: [-260, 260]
+                },
+                legend: {
+                    font: {
+                        family: secondaryFont
+                    }
                 },
                 shapes: [
                     {
@@ -193,7 +203,83 @@ class ShotChart extends React.Component {
 
                 ]
             },
+            config: {
+                responsive: true
+            }
         }
+    }
+
+    componentDidMount(){
+        this.loadShotDetail();
+    }
+
+    //load the shot details for the player
+    loadShotDetail(){
+        axios.get('/data/shot-chart-detail.json')
+            .then(response => {
+                let shotDetail = response.data.filter(x => x['PLAYER_ID'] === this.props.player['PERSON_ID']);
+
+                let traces = [];
+
+                //need to use array of arrays for custom data
+                var customData = shotDetail.map(function(obj) {
+                    return Object.keys(obj).sort().map(function(key) { 
+                        let value = obj[key];
+                        if(key === "SECONDS_REMAINING" && value < 10){
+                            //add a leading zero to the seconds remaining
+                            return "0" + value.toString();
+                        }
+                        if(key === "PERIOD" && value > 4){
+                            //if the shot was taken in overtime
+                            let ot = "OT";
+                            if(value > 5){
+                                ot += (value - 4);
+                            }
+                            return ot;
+                        } 
+                        else {
+                            //return the default value
+                            return value;
+                        }
+                    });
+                  });
+
+                //missed, made
+                let shotFlags = [ false, true ]; 
+                shotFlags.forEach(flag => {
+                    let madeFlag = flag ? 1 : 0;
+                    let shots = shotDetail.filter(x => x['SHOT_MADE_FLAG'] === madeFlag);
+                    let trace = {
+                        name: flag ? 'Made' : 'Missed',
+                        x: shots.map(shot => shot['LOC_X']),
+                        y: shots.map(shot => shot['LOC_Y']),
+                        mode: 'markers',
+                        marker: {
+                            color: flag ? 'green' : 'red', 
+                            symbol: flag ? 'circle' : 'x'
+                        },
+                        customdata: customData,
+                        text: shots.map(shot => shot['SHOT_DISTANCE']),
+                        hovertemplate: 
+                            "<b>%{customdata[1]}</b><br>" +
+                            "%{customdata[0]}<br>" +
+                            "<b>Distance:</b> %{text} ft.<br>" +
+                            "<b>Matchup:</b> %{customdata[6]} vs %{customdata[23]}<br>" +
+                            "<b>Period:</b> %{customdata[10]}<br>" +
+                            "<b>Time Remaining:</b> %{customdata[9]}:%{customdata[13]}<br>" +
+                            "<extra></extra>"
+                    };
+
+                    traces.push(trace);
+                });
+
+                this.setState({
+                    data: traces
+                });
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 
     render() {
@@ -202,8 +288,7 @@ class ShotChart extends React.Component {
                 data={this.state.data}
                 layout={this.state.layout}
                 config={this.state.config}
-            // style={{ width:"100%" }}
-            // style:{{ width:"100%", height: "100%" }}
+                //style={{ width:"100%" }}
             />
         );
     }

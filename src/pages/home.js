@@ -7,11 +7,18 @@ import {
     CardContent,
     CardHeader
 } from '@material-ui/core';
+
+//componenets
+import PlayerProfileCard from '../components/cards/PlayerProfileCard';
+import ShotChart from '../components/charts/plotly/ShotChart';
 import LineChart from '../components/charts/plotly/LineChart';
 import StatCategorySelect from '../components/selects/StatCategorySelect';
+
+//selectors
 import { getStatCategory } from '../state/selectors/StatCategorySelector';
-import ShotChart from '../components/charts/plotly/ShotChart';
 import { getPlayers } from '../state/selectors/PlayerSelector';
+
+//thunks
 import { loadPlayers } from '../state/thunks/PlayerThunks';
 
 class Home extends React.Component {
@@ -26,27 +33,27 @@ class Home extends React.Component {
     getGames(){
         let players = this.props.players;
 
-        players.forEach(player => {
-            let playerID = player['PERSON_ID'];
-            let color = player['LINE_COLOR'];
-
-            axios.get('/data/' + playerID +  '/game-log.json')
-                .then(response => {
+        axios.get('/data/game-log.json')
+            .then(response => {
+                players.forEach(player => {
+                    let playerID = player['PERSON_ID'];
+                    let color = player['LINE_COLOR'];
+        
                     let d = {
                         id: playerID,
                         color: color,
-                        games: response.data
+                        games: response.data.filter(x => x['Player_ID'] === playerID)
                     };
                     this.gameData.push(d);
         
                     this.setState({
                         data: this.gameData
                     });
-                })
-                .catch(error => {
-                    console.log(error);
                 });
-        });
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 
     componentDidMount(){
@@ -68,6 +75,26 @@ class Home extends React.Component {
 
         return ( 
             <Grid container spacing={1}>
+                {this.props.players.map(player => {
+                    return <Grid item sm={12} md={6} key={player['PERSON_ID']} >
+                        <PlayerProfileCard player={player} />
+                    </Grid>
+                })}
+
+                {this.props.players.map(player => {
+                    return <Grid item sm={12} md={6} key={player['PERSON_ID']} >
+                        <Card>
+                            <CardHeader
+                                title={player['DISPLAY_FIRST_LAST']}
+                                subheader='Shot Detail'
+                            />
+                            <CardContent>
+                                <ShotChart player={player}></ShotChart>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                })}
+
                 <Grid item xs={12}>
                     <Card>
                         <CardContent>
@@ -76,20 +103,6 @@ class Home extends React.Component {
                         </CardContent>
                     </Card>
                 </Grid>
-
-                {this.props.players.map(player => {
-                    return <Grid item xs={6} key={player['PERSON_ID']} >
-                        <Card>
-                            <CardHeader
-                                title={player['DISPLAY_FIRST_LAST']}
-                                subheader={player['TEAM_CITY']}
-                            />
-                            <CardContent>
-                                <ShotChart></ShotChart>
-                            </CardContent>
-                        </Card>
-                    </Grid>
-                })}
             </Grid>
         );
     }
@@ -101,7 +114,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    startLoadingPlayers: () =>  dispatch(loadPlayers)
+    startLoadingPlayers: () =>  dispatch(loadPlayers())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

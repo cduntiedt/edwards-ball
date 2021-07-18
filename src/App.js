@@ -8,22 +8,17 @@ import {
 import NavBar from './components/nav/NavBar';
 import {
   ThemeProvider,
-  createMuiTheme,
   Box, 
   Container
 } from '@material-ui/core';
+import {
+  theme
+} from './theme';
 
 import Home from './pages/home';
 
 //edwards: 1630162
 //ball: 1630163
-
-const font =  "'Permanent Marker', sans-serif";
-const theme = createMuiTheme({
-  typography: {
-    fontFamily: font,
-  }
-});
 
 function App() {
   return (

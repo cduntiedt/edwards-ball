@@ -3,14 +3,34 @@ import Plot from 'react-plotly.js';
 import { connect } from 'react-redux';
 import { getPlayers } from '../../../state/selectors/PlayerSelector';
 import { loadPlayers } from '../../../state/thunks/PlayerThunks';
+import { primaryFont, secondaryFont } from '../../../theme';
 
 class LineChart extends React.Component {
     constructor(props) {
         super(props);
+        
+        this.props.startLoadingPlayers();
+
         this.state = { 
             data: [],
             layout: {
-                title: props.title
+                title: {
+                    text: this.props.title,
+                    font: {
+                        family: secondaryFont,
+                        size: 12
+                    }
+                },
+                xaxis: {
+                    font: {
+                        family: primaryFont
+                    }
+                },
+                yaxis: {
+                    font: {
+                        family: primaryFont
+                    }
+                }
             },
             config: {
                 responsive: true
@@ -19,7 +39,6 @@ class LineChart extends React.Component {
         }
 
         this.loadChart = this.loadChart.bind(this);
-        this.props.startLoadingPlayers();
     }
 
     convertDate(dt){
@@ -149,7 +168,28 @@ class LineChart extends React.Component {
         if(title !== undefined){
             this.setState({
                 layout: {
-                    title: title
+                    title: {
+                        text: title,
+                        font: {
+                            family: secondaryFont,
+                            size: 24
+                        }
+                    },
+                    legend: {
+                        font: {
+                            family: secondaryFont
+                        }
+                    },
+                    xaxis: {
+                        tickfont: {
+                            family: primaryFont
+                        }
+                    },
+                    yaxis: {
+                        tickfont: {
+                            family: primaryFont
+                        }
+                    }
                 }
             });
         }
