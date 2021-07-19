@@ -82,25 +82,6 @@ class Home extends React.Component {
             categorySeleted = true;
         }
 
-        //load chart if a category is selected
-        let chartPerGame = <div></div>;
-        if (this.props.selectedCategory !== undefined && this.props.selectedCategory !== null) {
-            chartPerGame = <LineChart 
-                data={this.state.data} 
-                x={'GAME_DATE'} 
-                y={this.props.selectedCategory.id} 
-                title={this.props.selectedCategory.text}/>;
-        }
-
-        let chartTotals = <div></div>
-        if (this.props.selectedCategory !== undefined && this.props.selectedCategory !== null) {
-            chartTotals = <LineChart 
-                data={this.state.data} 
-                x={'GAME_DATE'} 
-                y={this.props.selectedCategory.id} 
-                title={this.props.selectedCategory.text}/>;
-        }
-
         return ( 
             <Grid container spacing={1}>
                 {/* player profile card */}
