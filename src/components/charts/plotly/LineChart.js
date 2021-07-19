@@ -85,6 +85,7 @@ class LineChart extends React.Component {
                 break;
             case "DEC":
                 parts[0] = 11;
+                break;
             default:
                 break;
         }

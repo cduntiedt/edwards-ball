@@ -6,13 +6,28 @@ import {
     CardContent,
     CardHeader,
     CardMedia,
-    Icon,
-    withStyles
+    Divider,
+    List,
+    ListItem,
+    ListItemText,
+    ListItemAvatar,
+    withStyles,
+    Typography
 } from '@material-ui/core';
+import {
+    Height,
+    FitnessCenter
+} from '@material-ui/icons';
+
 
 const useStyles = theme => ({
     media: {
-        textAlign: 'center'
+        textAlign: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center'
+    },
+    whiteBackground: {
+        backgroundColor: 'white'
     },
     small: {
         width: theme.spacing(3),
@@ -28,7 +43,6 @@ class PlayerProfileCard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            headlines: null
         }
     }
 
@@ -56,47 +70,96 @@ class PlayerProfileCard extends Component {
         let classes = this.props.classes;
         let player = this.props.player;
         let team = player['TEAM_CITY'] + ' ' + player['TEAM_NAME'];
-
-        let headlines = <div></div>;
-
-        if(this.state.headlines !== null){
-            headlines = <ul>
-                <li>
-                    <b>Points:</b> {this.state.headlines['PTS']}
-                </li>
-                <li>
-                    <b>Assists:</b> {this.state.headlines['AST']}
-                </li>
-                <li>
-                    <b>Rebounds:</b> {this.state.headlines['REB']}
-                </li>
-                <li>
-                    <b>PIE:</b> {this.state.headlines['PIE']}
-                </li>
-            </ul>;
-        }
+        let primaryColor = player['PRIMARY_COLOR'];
+        let secondaryColor = player['SECONDARY_COLOR'];
+        let thirdColor = player['THIRD_COLOR'];
 
         return (
             <Card>
                 <CardHeader
-                    avatar={
-                        <Avatar 
-                            alt={team} 
-                            src={'img/LOGO-' + player['TEAM_ABBREVIATION'] + '.svg'}  
-                        />
+                    style={{
+                        backgroundColor: primaryColor,
+                        borderBottom: "3px solid " + thirdColor
+                    }}
+                    title={
+                        <Typography 
+                            variant='h5' 
+                            style={{color:"white"}}
+                        >
+                            {player['DISPLAY_FIRST_LAST']}
+                        </Typography>
                     }
-                    title={player['DISPLAY_FIRST_LAST']}
-                    subheader={team}
+                    subheader={
+                        <Typography 
+                            variant='body1'
+                            style={{color:"white"}}
+                        >
+                            {team}
+                        </Typography>
+                    }
                 />
 
-                <CardMedia className={classes.media}>
+                <CardMedia 
+                    className={classes.media}
+                    style={{
+                        backgroundColor: secondaryColor,
+                        backgroundImage: 'url(img/LOGO-' + player['TEAM_ABBREVIATION'] + '.svg)',
+                    }}
+                >
                     <img
                         src={'img/' + player['PERSON_ID'].toString() + '.png'}
+                        alt={player['DISPLAY_FIRST_LAST']}
+                        style={{ marginBottom: "-4px" }}
                     />
                 </CardMedia>
 
-                <CardContent>
-                    {headlines}
+                <CardContent className={classes.whiteBackground}>
+                    <List>
+                        <ListItem>
+                            <ListItemAvatar>
+                                <Avatar style={{backgroundColor: secondaryColor}}>
+                                    <Height/>
+                                </Avatar>
+                            </ListItemAvatar>
+                            <ListItemText primary="Height" secondary={player['HEIGHT']}/>
+                        </ListItem>
+                        <Divider />
+                        <ListItem>
+                            <ListItemAvatar>
+                                <Avatar style={{backgroundColor: secondaryColor}}>
+                                    <FitnessCenter/>
+                                </Avatar>
+                            </ListItemAvatar>
+                            <ListItemText primary="Weight" secondary={player['WEIGHT']}/>
+                        </ListItem>
+                        <Divider />
+                        <ListItem>
+                            <ListItemAvatar>
+                                <Avatar style={{backgroundColor: secondaryColor}}>
+                                    {player['POSITION'].substring(0,1)}
+                                </Avatar>
+                            </ListItemAvatar>
+                            <ListItemText primary="Position" secondary={player['POSITION']}/>
+                        </ListItem>
+                        <Divider />
+                        <ListItem>
+                            <ListItemAvatar>
+                                <Avatar style={{backgroundColor: secondaryColor}}>
+                                    {player['JERSEY']}
+                                </Avatar>
+                            </ListItemAvatar>
+                            <ListItemText primary="Jersey Number" secondary={ '#' + player['JERSEY']}/>
+                        </ListItem>
+                        <Divider />
+                        <ListItem>
+                            <ListItemAvatar>
+                                <Avatar style={{backgroundColor: secondaryColor}}>
+                                    {player['DRAFT_NUMBER']}
+                                </Avatar>
+                            </ListItemAvatar>
+                            <ListItemText primary="Draft Overall" secondary={ '#' + player['DRAFT_NUMBER']}/>
+                        </ListItem>
+                    </List>
                 </CardContent>
             </Card>
         );

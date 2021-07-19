@@ -1,11 +1,14 @@
 import axios from 'axios';
 import React from 'react';
 import { connect } from 'react-redux';
-import { 
-    Grid,
+import {
+    Avatar, 
     Card,
     CardContent,
-    CardHeader
+    CardHeader,
+    Grid,
+    Typography,
+    withStyles
 } from '@material-ui/core';
 
 //componenets
@@ -20,6 +23,15 @@ import { getPlayers } from '../state/selectors/PlayerSelector';
 
 //thunks
 import { loadPlayers } from '../state/thunks/PlayerThunks';
+
+const useStyles = theme => ({
+    header:{
+        color: 'white'
+    },
+    avatar:{
+        backgroundColor: 'white'
+    }
+});
 
 class Home extends React.Component {
     gameData = [];
@@ -61,11 +73,11 @@ class Home extends React.Component {
     }
 
     render() { 
-        let chart;
+        let classes = this.props.classes;
 
-        if (this.props.selectedCategory === undefined || this.props.selectedCategory === null) {
-            chart = <div></div>;
-        } else {
+        //load chart if a category is selected
+        let chart = <div></div>;
+        if (this.props.selectedCategory !== undefined && this.props.selectedCategory !== null) {
             chart = <LineChart 
                 data={this.state.data} 
                 x={'GAME_DATE'} 
@@ -82,11 +94,35 @@ class Home extends React.Component {
                 })}
 
                 {this.props.players.map(player => {
-                    return <Grid item sm={12} md={6} key={player['PERSON_ID']} >
+                    return <Grid item xs={12} sm={12} md={6} key={player['PERSON_ID']} >
                         <Card>
                             <CardHeader
-                                title={player['DISPLAY_FIRST_LAST']}
-                                subheader='Shot Detail'
+                                style={{
+                                    backgroundColor: player['PRIMARY_COLOR']
+                                }}
+                                avatar={
+                                    <Avatar 
+                                        className={classes.avatar}
+                                        alt={player['DISPLAY_FIRST_LAST']} 
+                                        src={'img/' + player['PERSON_ID'].toString() + '.png'}  
+                                    />
+                                }
+                                title={
+                                    <Typography 
+                                        variant='h5'
+                                        className={classes.header}
+                                    >
+                                        {player['DISPLAY_FIRST_LAST']}
+                                    </Typography>
+                                }
+                                subheader={
+                                    <Typography 
+                                        variant='body1'
+                                        className={classes.header}
+                                    >
+                                        Shot Detail
+                                    </Typography>
+                                }
                             />
                             <CardContent>
                                 <ShotChart player={player}></ShotChart>
@@ -97,6 +133,9 @@ class Home extends React.Component {
 
                 <Grid item xs={12}>
                     <Card>
+                        <CardHeader
+                            title='Per Game Growth Comparison'
+                        />
                         <CardContent>
                             <StatCategorySelect></StatCategorySelect>
                             {chart}
@@ -117,4 +156,4 @@ const mapDispatchToProps = dispatch => ({
     startLoadingPlayers: () =>  dispatch(loadPlayers())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(useStyles)(Home));
