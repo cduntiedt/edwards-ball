@@ -130,8 +130,7 @@ class Home extends React.Component {
                     </Grid>
                 })}
 
-                {/* player per game growth comparison */}
-
+                {/* player per mode growth comparison */}
                 {perModes.map(perMode => {
                     return <Grid item xs={12} key={perMode}>
                         <Card>
