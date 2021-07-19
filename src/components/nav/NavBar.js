@@ -15,7 +15,7 @@ class NavBar extends React.Component {
     render() { 
         return ( 
             <div>
-                <AppBar style={{background: "linear-gradient(90deg, rgb(12, 35, 64) 45%, rgb(0,120,140) 55%)"}} >
+                <AppBar style={{background: "linear-gradient(90deg, rgb(12, 35, 64) 45%, rgb(29,17,96) 55%)"}} >
                     <Toolbar style={{margin: '0 auto'}}>
                         <Link href='#' color="inherit">
                             <Typography variant="h3"  >
@@ -26,7 +26,7 @@ class NavBar extends React.Component {
 
                      <div
                         style={{
-                            background: "linear-gradient(90deg, rgb(120, 190, 32) 45%, rgb(29,17,96) 55%)",
+                            background: "linear-gradient(90deg, rgb(120, 190, 32) 45%, rgb(0,120,140) 55%)",
                             width: "100%",
                             height: "4px"
                         }}

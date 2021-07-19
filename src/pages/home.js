@@ -26,7 +26,8 @@ import { loadPlayers } from '../state/thunks/PlayerThunks';
 
 const useStyles = theme => ({
     header:{
-        color: 'white'
+        color: 'white',
+        background: "linear-gradient(90deg, rgb(12, 35, 64) 45%, rgb(29,17,96) 55%)"
     },
     avatar:{
         backgroundColor: 'white'
@@ -74,11 +75,26 @@ class Home extends React.Component {
 
     render() { 
         let classes = this.props.classes;
+        let perModes = [ 'Per Game', 'Total' ];
+        let categorySeleted = false;
+
+        if(this.props.selectedCategory !== undefined && this.props.selectedCategory !== null){
+            categorySeleted = true;
+        }
 
         //load chart if a category is selected
-        let chart = <div></div>;
+        let chartPerGame = <div></div>;
         if (this.props.selectedCategory !== undefined && this.props.selectedCategory !== null) {
-            chart = <LineChart 
+            chartPerGame = <LineChart 
+                data={this.state.data} 
+                x={'GAME_DATE'} 
+                y={this.props.selectedCategory.id} 
+                title={this.props.selectedCategory.text}/>;
+        }
+
+        let chartTotals = <div></div>
+        if (this.props.selectedCategory !== undefined && this.props.selectedCategory !== null) {
+            chartTotals = <LineChart 
                 data={this.state.data} 
                 x={'GAME_DATE'} 
                 y={this.props.selectedCategory.id} 
@@ -87,18 +103,21 @@ class Home extends React.Component {
 
         return ( 
             <Grid container spacing={1}>
+                {/* player profile card */}
                 {this.props.players.map(player => {
                     return <Grid item sm={12} md={6} key={player['PERSON_ID']} >
                         <PlayerProfileCard player={player} />
                     </Grid>
                 })}
 
+                {/* player shot detail card */}
                 {this.props.players.map(player => {
                     return <Grid item xs={12} sm={12} md={6} key={player['PERSON_ID']} >
                         <Card>
                             <CardHeader
+                                className={classes.header}
                                 style={{
-                                    backgroundColor: player['PRIMARY_COLOR']
+                                    background: player['PRIMARY_COLOR']
                                 }}
                                 avatar={
                                     <Avatar 
@@ -110,7 +129,6 @@ class Home extends React.Component {
                                 title={
                                     <Typography 
                                         variant='h5'
-                                        className={classes.header}
                                     >
                                         {player['DISPLAY_FIRST_LAST']}
                                     </Typography>
@@ -118,30 +136,44 @@ class Home extends React.Component {
                                 subheader={
                                     <Typography 
                                         variant='body1'
-                                        className={classes.header}
                                     >
                                         Shot Detail
                                     </Typography>
                                 }
                             />
                             <CardContent>
+                                {/* TODO: add game select */}
                                 <ShotChart player={player}></ShotChart>
                             </CardContent>
                         </Card>
                     </Grid>
                 })}
 
-                <Grid item xs={12}>
-                    <Card>
-                        <CardHeader
-                            title='Per Game Growth Comparison'
-                        />
-                        <CardContent>
-                            <StatCategorySelect></StatCategorySelect>
-                            {chart}
-                        </CardContent>
-                    </Card>
-                </Grid>
+                {/* player per game growth comparison */}
+
+                {perModes.map(perMode => {
+                    return <Grid item xs={12} key={perMode}>
+                        <Card>
+                            <CardHeader
+                                className={classes.header}
+                                title={perMode + ' Growth Comparison'}
+                                style={{background: "linear-gradient(90deg, rgb(12, 35, 64) 45%, rgb(29,17,96) 55%)"}}
+                            />
+                            <CardContent>
+                                <StatCategorySelect></StatCategorySelect>
+
+                                {categorySeleted 
+                                    ? <LineChart 
+                                        data={this.state.data} 
+                                        x={'GAME_DATE'} 
+                                        y={this.props.selectedCategory.id} 
+                                        title={this.props.selectedCategory.text}/>
+                                    : <div></div>
+                                }
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                })}
             </Grid>
         );
     }
