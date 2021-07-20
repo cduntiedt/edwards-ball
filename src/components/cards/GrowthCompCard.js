@@ -53,7 +53,8 @@ class GrowthCompCard extends React.Component {
                             data={this.props.data} 
                             x={'GAME_DATE'} 
                             y={this.state.category.id} 
-                            title={this.state.category.text}/>
+                            title={this.state.category.text}
+                            perMode={this.props.perMode}/>
                         : <div></div>
                     }
                 </CardContent>

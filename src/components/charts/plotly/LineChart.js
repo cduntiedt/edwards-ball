@@ -140,8 +140,12 @@ class LineChart extends React.Component {
                     x: sortedData.map(game => this.convertDate(game[x])),
                     y: sortedData.map((game, i) => { 
                         sum += game[y];
-                        let gameIndex = i + 1;
-                        return sum / gameIndex; 
+                        if(this.props.perMode === "Per Game"){
+                            let gameIndex = i + 1;
+                            return sum / gameIndex; 
+                        }else{
+                            return sum;
+                        }
                     }),
                     text: sortedData.map(game => game[y]),
                     customdata: sortedData.map(game => game["MATCHUP"]),
@@ -153,7 +157,7 @@ class LineChart extends React.Component {
                         "<b>Date:</b> %{x}<br>" +
                         "<b>Matchup:</b> %{customdata}<br>" +
                         "<b>" + this.props.title + ":</b> %{text}<br>" +
-                        "<b>Average:</b> %{y}<br>" +
+                        "<b>" + this.props.perMode + ":</b> %{y}<br>" +
                         "<extra></extra>"
                 }
     
