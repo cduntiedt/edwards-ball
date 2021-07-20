@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+//import { selectCategory } from '../../state/actions/StatCategoryAction'; //removed from app state
 import {
     InputLabel,
     MenuItem,
@@ -52,8 +54,9 @@ class StatCategorySelect extends React.Component {
         });
 
         let category = this.state.data.filter(cat => cat.id === value)[0];
-        //this.props.value = category;
         this.props.handleChange(category);
+
+        //this.props.dispatch(selectCategory(category));
     }
 
     render() { 
@@ -76,4 +79,4 @@ class StatCategorySelect extends React.Component {
     }
 }
  
-export default (withStyles(useStyles)(StatCategorySelect));
+export default connect()(withStyles(useStyles)(StatCategorySelect));
