@@ -14,8 +14,6 @@ import {
 //componenets
 import PlayerProfileCard from '../components/cards/PlayerProfileCard';
 import ShotChart from '../components/charts/plotly/ShotChart';
-import LineChart from '../components/charts/plotly/LineChart';
-import StatCategorySelect from '../components/selects/StatCategorySelect';
 
 //selectors
 import { getStatCategory } from '../state/selectors/StatCategorySelector';
@@ -23,6 +21,7 @@ import { getPlayers } from '../state/selectors/PlayerSelector';
 
 //thunks
 import { loadPlayers } from '../state/thunks/PlayerThunks';
+import GrowthCompCard from '../components/cards/GrowthCompCard';
 
 const useStyles = theme => ({
     header:{
@@ -76,11 +75,6 @@ class Home extends React.Component {
     render() { 
         let classes = this.props.classes;
         let perModes = [ 'Per Game', 'Total' ];
-        let categorySeleted = false;
-
-        if(this.props.selectedCategory !== undefined && this.props.selectedCategory !== null){
-            categorySeleted = true;
-        }
 
         return ( 
             <Grid container spacing={1}>
@@ -133,25 +127,7 @@ class Home extends React.Component {
                 {/* player per mode growth comparison */}
                 {perModes.map(perMode => {
                     return <Grid item xs={12} key={perMode}>
-                        <Card>
-                            <CardHeader
-                                className={classes.header}
-                                title={perMode + ' Growth Comparison'}
-                                style={{background: "linear-gradient(90deg, rgb(12, 35, 64) 45%, rgb(29,17,96) 55%)"}}
-                            />
-                            <CardContent>
-                                <StatCategorySelect></StatCategorySelect>
-
-                                {categorySeleted 
-                                    ? <LineChart 
-                                        data={this.state.data} 
-                                        x={'GAME_DATE'} 
-                                        y={this.props.selectedCategory.id} 
-                                        title={this.props.selectedCategory.text}/>
-                                    : <div></div>
-                                }
-                            </CardContent>
-                        </Card>
+                        <GrowthCompCard data={this.state.data} perMode={perMode}/>
                     </Grid>
                 })}
             </Grid>

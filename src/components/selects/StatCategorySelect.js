@@ -1,6 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { selectCategory } from '../../state/actions/StatCategoryAction';
 import {
     InputLabel,
     MenuItem,
@@ -19,6 +17,7 @@ const useStyles = theme => ({
 class StatCategorySelect extends React.Component {
     constructor(props) {
         super(props);
+        this.handleChange = this.handleChange.bind(this);
         this.state = { 
             value: '',
             data: [
@@ -45,7 +44,7 @@ class StatCategorySelect extends React.Component {
          }
     }
 
-    handleChange = (e) => {
+    handleChange(e) {
         //set selected stat category
         let value = e.target.value;
         this.setState({
@@ -53,8 +52,8 @@ class StatCategorySelect extends React.Component {
         });
 
         let category = this.state.data.filter(cat => cat.id === value)[0];
-
-        this.props.dispatch(selectCategory(category));
+        //this.props.value = category;
+        this.props.handleChange(category);
     }
 
     render() { 
@@ -63,7 +62,7 @@ class StatCategorySelect extends React.Component {
                 <FormControl className={this.props.classes.root}>
                     <InputLabel>Category</InputLabel>
                     <Select
-                    value={this.state.value}
+                    value={this.props.value}
                     onChange={this.handleChange}>
                         { 
                             this.state.data.map(category => {
@@ -77,4 +76,4 @@ class StatCategorySelect extends React.Component {
     }
 }
  
-export default connect()(withStyles(useStyles)(StatCategorySelect));
+export default (withStyles(useStyles)(StatCategorySelect));
