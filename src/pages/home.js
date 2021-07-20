@@ -11,17 +11,18 @@ import {
     withStyles
 } from '@material-ui/core';
 
-//componenets
-import PlayerProfileCard from '../components/cards/PlayerProfileCard';
-import ShotChart from '../components/charts/plotly/ShotChart';
-
 //selectors
 import { getStatCategory } from '../state/selectors/StatCategorySelector';
 import { getPlayers } from '../state/selectors/PlayerSelector';
 
 //thunks
 import { loadPlayers } from '../state/thunks/PlayerThunks';
+
+//componenets
+import PlayerProfileCard from '../components/cards/PlayerProfileCard';
+import ShotChart from '../components/charts/plotly/ShotChart';
 import GrowthCompCard from '../components/cards/GrowthCompCard';
+import DonutChart from '../components/charts/plotly/DonutChart';
 
 const useStyles = theme => ({
     header:{
@@ -123,6 +124,10 @@ class Home extends React.Component {
                         </Card>
                     </Grid>
                 })}
+
+                <Grid item xs={12}>
+                    <DonutChart/>
+                </Grid>
 
                 {/* player per mode growth comparison */}
                 {perModes.map(perMode => {
