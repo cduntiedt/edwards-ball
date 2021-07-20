@@ -9,31 +9,29 @@ class DonutChart extends React.Component {
                 responsive: true
             },
             data: [ 
-                {"PTS": 19.3},
-                {"AST": 2.9},
-                {"REB": 4.7,}
+                {   
+                    "PTS": 19.3, 
+                    "AST": 2.9,
+                    "REB": 4.7,
+                }
             ]
          }
     }
 
     render() { 
 
-        let keys = this.state.data.forEach((value) => {
-            return Object.keys(value)[0];
-        })
-
-        console.log(keys);
         let data = [{
-            values: this.state.data.map(x => x),
-            labels: keys,
+            values: Object.values(this.state.data[0]),
+            labels: Object.keys(this.state.data[0]),
             hole: .5,
             type: 'pie'
         }];
 
+        console.log(data);
 
         return ( 
             <Plot
-                data={this.state.data}
+                data={data}
                 // layout={this.state.layout}
                 config={this.state.config}
                 // style={{ width:"100%", height: this.state.height }}
