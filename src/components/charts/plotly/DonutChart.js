@@ -8,31 +8,53 @@ class DonutChart extends React.Component {
             config: {
                 responsive: true
             },
-            data: [ 
-                {   
-                    "PTS": 19.3, 
-                    "AST": 2.9,
-                    "REB": 4.7,
-                }
-            ]
-         }
+            layout: {
+                images: []
+            },
+            data: []
+        }
     }
 
-    render() { 
+    loadChart() {
+        let fields = this.props.fields;
 
         let data = [{
-            values: Object.values(this.state.data[0]),
-            labels: Object.keys(this.state.data[0]),
+            values: fields.map(field => this.props.data[field]),
+            labels: fields,
             hole: .5,
             type: 'pie'
         }];
 
-        console.log(data);
+        let layout = {
+            images: [
+                {
+                    layer: "below",
+                    x: 0.35,
+                    y: 0.47,
+                    sizex:0.45,
+                    sizey:0.45,
+                    source: this.props.image,
+                    xanchor: "middle",
+                    yanchor: "middle",
+                }
+            ]
+        };
 
+        this.setState({
+            data: data,
+            layout: layout
+        })
+    }
+
+    componentDidMount(){
+        this.loadChart();
+    }
+
+    render() { 
         return ( 
             <Plot
-                data={data}
-                // layout={this.state.layout}
+                data={this.state.data}
+                layout={this.state.layout}
                 config={this.state.config}
                 // style={{ width:"100%", height: this.state.height }}
             />
