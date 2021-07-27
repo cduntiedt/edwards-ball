@@ -39,8 +39,6 @@ class PlayerStatsDonutCard extends React.Component {
                 this.setState({
                     data: data
                 });
-
-                console.log(data);
             })
             .catch(error => {
                 console.log(error);
@@ -48,13 +46,10 @@ class PlayerStatsDonutCard extends React.Component {
     }
 
     componentDidMount(){
-
         this.getSeasonTotals();
     }
 
     render() { 
-
-
         return ( 
             <PlayerCard player={this.props.player} subheader={this.props.subheader}>
                 <DonutChart 

@@ -81,7 +81,7 @@ class Home extends React.Component {
                 })}
 
                 {this.props.players.map(player => {
-                    return <Grid item xs={12} key={player['PERSON_ID']}>
+                    return <Grid item xs={12} sm={12} md={6} key={player['PERSON_ID']}>
                         <PlayerStatsDonutCard 
                             player={player} 
                             subheader={''} 

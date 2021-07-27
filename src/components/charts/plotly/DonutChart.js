@@ -29,13 +29,13 @@ class DonutChart extends React.Component {
             images: [
                 {
                     layer: "below",
-                    x: 0.35,
+                    x: 0.30,
                     y: 0.47,
                     sizex:0.45,
                     sizey:0.45,
                     source: this.props.image,
-                    xanchor: "middle",
-                    yanchor: "middle",
+                    xanchor: "left",
+                    yanchor: "top",
                 }
             ]
         };
@@ -50,13 +50,23 @@ class DonutChart extends React.Component {
         this.loadChart();
     }
 
+    componentDidUpdate(prevProps){
+        //if the props change, reload the chart
+        if(prevProps !== this.props){
+            //TODO: debounce
+            setTimeout(() => {
+                this.loadChart();
+            },1000);
+        }
+    }
+
     render() { 
         return ( 
             <Plot
                 data={this.state.data}
                 layout={this.state.layout}
                 config={this.state.config}
-                // style={{ width:"100%", height: this.state.height }}
+                style={{ width:"100%" }}
             />
          );
     }
