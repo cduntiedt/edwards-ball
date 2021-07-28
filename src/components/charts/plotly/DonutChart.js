@@ -25,17 +25,26 @@ class DonutChart extends React.Component {
             type: 'pie'
         }];
 
+        //TODO: need to resize image based on screen size
         let layout = {
+            margin: {
+                l:0,
+                r:0,
+                t:0,
+                b:0
+            },
             images: [
                 {
                     layer: "below",
-                    x: 0.30,
-                    y: 0.47,
-                    sizex:0.45,
-                    sizey:0.45,
+                    x: 0.25,
+                    y: 0.5,
+                    sizex:0.5,
+                    sizey:0.5,
                     source: this.props.image,
-                    xanchor: "left",
-                    yanchor: "top",
+                    xref: "paper",
+                    yref: "paper",
+                    xanchor: "middle",
+                    yanchor: "middle",
                 }
             ]
         };
