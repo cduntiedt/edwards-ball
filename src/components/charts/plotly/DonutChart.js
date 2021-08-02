@@ -15,7 +15,9 @@ class DonutChart extends React.Component {
         }
     }
 
-    loadChart() {
+    loadChart(){
+        this.setLayout();
+       
         let fields = this.props.fields;
 
         let data = [{
@@ -24,6 +26,33 @@ class DonutChart extends React.Component {
             hole: .5,
             type: 'pie'
         }];
+
+        this.setState({
+            data: data
+        });
+    }
+
+    //reset the graph layout when the window is resized
+    setLayout(){
+        console.log(window.innerWidth);
+
+        let screenWidth = window.innerWidth;
+        let size = 0.5;
+        let posY = 0.5;
+
+        switch (true) {
+            case (screenWidth >= 1440):
+                size = 0.52;
+                posY = 0.48
+                break;
+            case (screenWidth >= 960):
+                size = 0.5;
+                posY = 0.45;
+                break;
+            default:
+                break;
+        }
+
 
         //TODO: need to resize image based on screen size
         let layout = {
@@ -37,9 +66,9 @@ class DonutChart extends React.Component {
                 {
                     layer: "below",
                     x: 0.25,
-                    y: 0.5,
-                    sizex:0.5,
-                    sizey:0.5,
+                    y: posY,
+                    sizex: size,
+                    sizey: size,
                     source: this.props.image,
                     xref: "paper",
                     yref: "paper",
@@ -50,12 +79,13 @@ class DonutChart extends React.Component {
         };
 
         this.setState({
-            data: data,
             layout: layout
-        })
+        });
     }
 
     componentDidMount(){
+        //resize the graph when the window size changes
+        window.addEventListener("resize", this.setLayout.bind(this));
         this.loadChart();
     }
 
@@ -69,13 +99,17 @@ class DonutChart extends React.Component {
         }
     }
 
+    componentWillUnmount(){
+        window.removeEventListener("resize", this.setLayout);
+    }
+
     render() { 
         return ( 
             <Plot
                 data={this.state.data}
                 layout={this.state.layout}
                 config={this.state.config}
-                style={{ width:"100%" }}
+                style={{ width:"100%", minHeight: "375px" }}
             />
          );
     }
