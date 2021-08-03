@@ -100,6 +100,8 @@ class LineChart extends React.Component {
     }
 
     componentDidMount(){
+        //resize the graph when the window size changes
+        window.addEventListener("resize", this.setLayout.bind(this));
         this.loadChart();
     }
 
@@ -113,14 +115,19 @@ class LineChart extends React.Component {
         }
     }
 
+    componentWillUnmount(){
+        window.removeEventListener("resize", this.setLayout);
+    }
+
     loadChart(){
         const x = this.props.x;
         const y = this.props.y;
         const data = this.props.data;
-        const title = this.props.title;
         const players = this.props.players;
         //update chart data
         if(data !== undefined && players !== undefined){
+            this.setLayout();
+
             let traces = [];
 
             data.forEach(player => {
@@ -168,9 +175,19 @@ class LineChart extends React.Component {
                 data: traces
             })
         }
+    }
 
+    setLayout(){
+        const title = this.props.title;
+      
         //update chart title
         if(title !== undefined){
+            console.log(window.innerWidth);
+            let orientation = "v";
+            if(window.innerWidth < 960){
+                orientation = "h";
+            }
+
             this.setState({
                 layout: {
                     title: {
@@ -180,7 +197,9 @@ class LineChart extends React.Component {
                             size: 24
                         }
                     },
+                    
                     legend: {
+                        orientation: orientation,    
                         font: {
                             family: secondaryFont
                         }

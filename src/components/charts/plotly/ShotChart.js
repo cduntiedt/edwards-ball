@@ -287,7 +287,7 @@ class ShotChart extends React.Component {
                 data={this.state.data}
                 layout={this.state.layout}
                 config={this.state.config}
-                //style={{ width:"100%" }}
+                style={{ maxWidth: "600px", margin:"0 auto" }}
             />
         );
     }

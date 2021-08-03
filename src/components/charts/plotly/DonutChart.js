@@ -34,27 +34,11 @@ class DonutChart extends React.Component {
 
     //reset the graph layout when the window is resized
     setLayout(){
-        console.log(window.innerWidth);
+        //determine image location based on screen size
+        let size = 0.65;
+        let posY = 0.48;
+        let posX = 0.2;
 
-        let screenWidth = window.innerWidth;
-        let size = 0.5;
-        let posY = 0.5;
-
-        switch (true) {
-            case (screenWidth >= 1440):
-                size = 0.52;
-                posY = 0.48
-                break;
-            case (screenWidth >= 960):
-                size = 0.5;
-                posY = 0.45;
-                break;
-            default:
-                break;
-        }
-
-
-        //TODO: need to resize image based on screen size
         let layout = {
             margin: {
                 l:0,
@@ -65,7 +49,7 @@ class DonutChart extends React.Component {
             images: [
                 {
                     layer: "below",
-                    x: 0.25,
+                    x: posX,
                     y: posY,
                     sizex: size,
                     sizey: size,
@@ -84,8 +68,8 @@ class DonutChart extends React.Component {
     }
 
     componentDidMount(){
-        //resize the graph when the window size changes
-        window.addEventListener("resize", this.setLayout.bind(this));
+        // //resize the graph when the window size changes
+        // window.addEventListener("resize", this.setLayout.bind(this));
         this.loadChart();
     }
 
@@ -109,7 +93,7 @@ class DonutChart extends React.Component {
                 data={this.state.data}
                 layout={this.state.layout}
                 config={this.state.config}
-                style={{ width:"100%", minHeight: "375px" }}
+                style={{ width:"100%", maxWidth: "420px", minHeight: "375px", margin: "0 auto" }}
             />
          );
     }
