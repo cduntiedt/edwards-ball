@@ -18,6 +18,7 @@ import ShotChart from '../components/charts/plotly/ShotChart';
 import GrowthCompCard from '../components/cards/GrowthCompCard';
 import PlayerCard from '../components/cards/PlayerCard';
 import PlayerStatsDonutCard from '../components/cards/PlayerStatsDonutCard';
+import PlayerShotsDonutCard from '../components/cards/PlayerShotsDonutCard';
 
 class Home extends React.Component {
     gameData = [];
@@ -82,11 +83,18 @@ class Home extends React.Component {
 
                 {this.props.players.map(player => {
                     return <Grid item xs={12} sm={12} md={6} key={player['PERSON_ID']}>
-                        <PlayerStatsDonutCard 
+                        <PlayerShotsDonutCard 
                             player={player} 
-                            subheader={''} 
-                            fields={['PTS', 'AST', 'REB', 'STL', 'BLK']}
+                            subheader={'Shot Range'} 
+                            item={'SHOT_ZONE_RANGE'}
+                            fields={['Less Than 8 ft.', '8-16 ft.', '16-24 ft.', '24+ ft.']}
                         />
+                    </Grid>
+                })}
+
+                {this.props.players.map(player => {
+                    return <Grid item xs={12} sm={12} md={6} key={player['PERSON_ID']}>
+                        
                     </Grid>
                 })}
 
