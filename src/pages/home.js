@@ -19,6 +19,7 @@ import GrowthCompCard from '../components/cards/GrowthCompCard';
 import PlayerCard from '../components/cards/PlayerCard';
 import PlayerStatsDonutCard from '../components/cards/PlayerStatsDonutCard';
 import PlayerShotsDonutCard from '../components/cards/PlayerShotsDonutCard';
+import PlayerIndicatorCard from '../components/cards/PlayerIndicatorCard';
 
 class Home extends React.Component {
     gameData = [];
@@ -94,7 +95,10 @@ class Home extends React.Component {
 
                 {this.props.players.map(player => {
                     return <Grid item xs={12} sm={12} md={6} key={player['PERSON_ID']}>
-                        
+                        <PlayerIndicatorCard 
+                            player={player} 
+                            subheader={'Stat Indicators'} 
+                        />
                     </Grid>
                 })}
 

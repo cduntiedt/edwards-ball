@@ -83,9 +83,9 @@ class DonutChart extends React.Component {
         }
     }
 
-    componentWillUnmount(){
-        window.removeEventListener("resize", this.setLayout);
-    }
+    // componentWillUnmount(){
+    //     window.removeEventListener("resize", this.setLayout);
+    // }
 
     render() { 
         return ( 
