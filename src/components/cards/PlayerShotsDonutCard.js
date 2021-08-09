@@ -41,10 +41,8 @@ class PlayerShotsDonutCard extends React.Component {
                 let fields = this.props.fields;
                 for (let index = 0; index < fields.length; index++) {
                     const field = fields[index];
-                    shots[field] = data.filter(x => x[this.props.item] == field).length;
+                    shots[field] = data.filter(x => x[this.props.item] === field).length;
                 }
-
-                console.log(shots);
 
                 this.setState({
                     data: shots

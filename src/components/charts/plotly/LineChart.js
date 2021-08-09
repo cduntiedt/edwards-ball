@@ -182,7 +182,6 @@ class LineChart extends React.Component {
       
         //update chart title
         if(title !== undefined){
-            console.log(window.innerWidth);
             let orientation = "v";
             if(window.innerWidth < 960){
                 orientation = "h";
