@@ -15,19 +15,28 @@ class PlayerIndicatorCard extends React.Component {
         axios.get('/data/season-totals.json')
             .then(response => {
                 let data = response.data;
-                let playerData = data.filter(x => x['PLAYER_ID'] === this.props.player['PERSON_ID']);
-                let compData = data.filter(x => x['PLAYER_ID'] === this.props.playerComp['PERSON_ID']);
+                // let playerData = data.filter(x => x['PLAYER_ID'] === this.props.player['PERSON_ID']);
+                // let compData = data.filter(x => x['PLAYER_ID'] === this.props.playerRef['PERSON_ID']);
+
+                // for (let index = 0; index < fields.length; index++) {
+                //     let field = fields[index];
+                //     let indicator = {
+                //         value: playerData[field],
+                //         reference: compData[field]
+                //     };
+
+                //     indicators.push(indicator);
+                // }
 
                 let fields = this.props.fields;
-                for (let index = 0; index < fields.length; index++) {
-                    let field = fields[index];
-                    let indicator = {
-                        value: playerData[field],
-                        reference: compData[field]
+                let indicators = fields.map(field => {
+                    return {
+                        value: data.filter(x => x['PLAYER_ID'] === this.props.player['PERSON_ID'])[0][field],
+                        reference: data.filter(x => x['PLAYER_ID'] === this.props.playerRef['PERSON_ID'])[0][field]
                     };
+                });
 
-                    indicators.push(indicator);
-                }
+                console.log(indicators);
 
                 this.setState({
                     indicators: indicators

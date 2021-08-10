@@ -44,7 +44,7 @@ class Indicator extends React.Component {
             margin: { t: 0, b: 0, l: 0, r: 0 }
         };
 
-        this.useState({
+        this.setState({
             data: data,
             layout: layout
         });

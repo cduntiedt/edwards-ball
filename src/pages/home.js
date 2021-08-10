@@ -26,7 +26,7 @@ class Home extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {  }
+        this.state = { }
         this.props.startLoadingPlayers();
     }
 
@@ -94,9 +94,14 @@ class Home extends React.Component {
                 })}
 
                 {this.props.players.map(player => {
+                    //filter the player being referenced
+                    let playerRef = this.props.players.filter(p => p['PERSON_ID'] !== player['PERSON_ID'])[0];
+
                     return <Grid item xs={12} sm={12} md={6} key={player['PERSON_ID']}>
                         <PlayerIndicatorCard 
+                            fields={['PTS', 'REB', 'AST', 'STL']}
                             player={player} 
+                            playerRef={playerRef} 
                             subheader={'Stat Indicators'} 
                         />
                     </Grid>
