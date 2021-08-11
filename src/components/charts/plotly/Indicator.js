@@ -36,7 +36,8 @@ class Indicator extends React.Component {
               mode: "number+delta",
               value: value,
               delta: { position: "top", reference: reference },
-              domain: { x: [0, 1], y: [0, 1] }
+              domain: { x: [0, 1], y: [0, 1] },
+              title: { text: this.props.title }
             }
         ];
           
@@ -55,6 +56,7 @@ class Indicator extends React.Component {
             <Plot 
                 data={this.state.data}
                 layout={this.state.layout}
+                style={{ width:"100%", maxWidth: "420px", minHeight: "220px", margin: "0 auto" }}
             /> 
         );
     }

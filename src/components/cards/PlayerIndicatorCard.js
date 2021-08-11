@@ -31,6 +31,7 @@ class PlayerIndicatorCard extends React.Component {
                 let fields = this.props.fields;
                 let indicators = fields.map(field => {
                     return {
+                        title: field,
                         value: data.filter(x => x['PLAYER_ID'] === this.props.player['PERSON_ID'])[0][field],
                         reference: data.filter(x => x['PLAYER_ID'] === this.props.playerRef['PERSON_ID'])[0][field]
                     };
@@ -69,7 +70,11 @@ class PlayerIndicatorCard extends React.Component {
             return ( 
                 <PlayerCard player={this.props.player} subheader={this.props.subheader}>
                     {this.state.indicators.map(indicator => { 
-                        return <Indicator value={indicator.value} reference={indicator.reference}/>
+                        return <Indicator 
+                                    title={indicator.title} 
+                                    value={indicator.value} 
+                                    reference={indicator.reference}
+                                />
                     })}
                 </PlayerCard>
             );
