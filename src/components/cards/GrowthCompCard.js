@@ -46,7 +46,10 @@ class GrowthCompCard extends React.Component {
                     style={{background: "linear-gradient(90deg, rgb(12, 35, 64) 45%, rgb(29,17,96) 55%)"}}
                 />
                 <CardContent>
-                    <StatCategorySelect value={this.state.category.id} handleChange={this.statCategoryHandler}></StatCategorySelect>
+                    <StatCategorySelect 
+                        value={this.state.category.id} 
+                        handleChange={this.statCategoryHandler}
+                    />
 
                     {this.state.categorySeleted 
                         ? <LineChart 

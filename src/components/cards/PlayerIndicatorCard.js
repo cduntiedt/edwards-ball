@@ -10,8 +10,6 @@ class PlayerIndicatorCard extends React.Component {
     }
     
     loadIndicators(){
-        let indicators = [];
-
         axios.get('/data/season-totals.json')
             .then(response => {
                 let data = response.data;
@@ -36,8 +34,6 @@ class PlayerIndicatorCard extends React.Component {
                         reference: data.filter(x => x['PLAYER_ID'] === this.props.playerRef['PERSON_ID'])[0][field]
                     };
                 });
-
-                console.log(indicators);
 
                 this.setState({
                     indicators: indicators
@@ -66,11 +62,11 @@ class PlayerIndicatorCard extends React.Component {
 
     render() { 
         if(this.state.indicators !== undefined){
-            console.log(this.state.indicators);
             return ( 
                 <PlayerCard player={this.props.player} subheader={this.props.subheader}>
                     {this.state.indicators.map(indicator => { 
                         return <Indicator 
+                                    key={this.props.player['PERSON_ID'] + '-' + indicator.title}
                                     title={indicator.title} 
                                     value={indicator.value} 
                                     reference={indicator.reference}

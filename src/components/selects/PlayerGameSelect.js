@@ -20,6 +20,7 @@ class PlayerGameSelect extends React.Component {
         super(props);
         this.handleChange = this.handleChange.bind(this);
         this.state = { 
+            value: null,
             data: []
         }
     }
@@ -27,7 +28,7 @@ class PlayerGameSelect extends React.Component {
     loadGames(){
         axios.get('/data/game-log.json')
         .then(response => {
-            let data = response.data.filter(game => game['Player_ID'] === this.props.player);
+            let data = response.data.filter(game => game['Player_ID'] === this.props.player['PERSON_ID']);
 
             this.setState({
                 data: data
@@ -49,8 +50,10 @@ class PlayerGameSelect extends React.Component {
             value: value
         });
 
-        let category = this.state.data.filter(cat => cat.id === value)[0];
-        this.props.handleChange(category);
+        let game = this.state.data.filter(g => g['Game_ID'] === value)[0];
+        if(this.props.handleChange !== undefined){
+            this.props.handleChange(game);
+        }
     }
 
     render() { 
@@ -59,8 +62,9 @@ class PlayerGameSelect extends React.Component {
                 <FormControl className={this.props.classes.root}>
                     <InputLabel>Select a game</InputLabel>
                     <Select
-                    value={this.props.value}
-                    onChange={this.handleChange}>
+                        defaultValue=""
+                        value={this.props.value}
+                        onChange={this.handleChange}>
                         { 
                             this.state.data.map(game => {
                                 return <MenuItem 

@@ -14,10 +14,10 @@ import { loadPlayers } from '../state/thunks/PlayerThunks';
 
 //componenets
 import PlayerProfileCard from '../components/cards/PlayerProfileCard';
-import ShotChart from '../components/charts/plotly/ShotChart';
 import GrowthCompCard from '../components/cards/GrowthCompCard';
-import PlayerCard from '../components/cards/PlayerCard';
-//import PlayerStatsDonutCard from '../components/cards/PlayerStatsDonutCard';
+// import ShotChart from '../components/charts/plotly/ShotChart';
+// import PlayerCard from '../components/cards/PlayerCard';
+// import PlayerStatsDonutCard from '../components/cards/PlayerStatsDonutCard';
 import PlayerShotsDonutCard from '../components/cards/PlayerShotsDonutCard';
 import PlayerIndicatorCard from '../components/cards/PlayerIndicatorCard';
 import PlayerShotCard from '../components/cards/PlayerShotCard';

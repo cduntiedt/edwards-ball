@@ -83,6 +83,7 @@ class ShotChart extends React.Component {
                     range: [-260, 260]
                 },
                 legend: {
+                    orientation: 'h',    
                     font: {
                         family: secondaryFont
                     }
@@ -212,11 +213,26 @@ class ShotChart extends React.Component {
         this.loadShotDetail();
     }
 
+    componentDidUpdate(prevProps){
+        //if the props change, reload the chart
+        if(prevProps !== this.props){
+            //TODO: debounce
+            setTimeout(() => {
+                this.loadShotDetail();
+            },1000);
+        }
+    }
+
     //load the shot details for the player
     loadShotDetail(){
         axios.get('/data/shot-chart-detail.json')
             .then(response => {
                 let shotDetail = response.data.filter(x => x['PLAYER_ID'] === this.props.player['PERSON_ID']);
+
+                let game = this.props.game;
+                if(game !== null){
+                    shotDetail = shotDetail.filter(x => x['GAME_ID'] === game['Game_ID'])
+                }
 
                 let traces = [];
 

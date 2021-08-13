@@ -196,7 +196,6 @@ class LineChart extends React.Component {
                             size: 24
                         }
                     },
-                    
                     legend: {
                         orientation: orientation,    
                         font: {
