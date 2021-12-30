@@ -6,7 +6,8 @@ class DonutChart extends React.Component {
         super(props);
         this.state = { 
             config: {
-                responsive: true
+                responsive: true,
+                displaylogo: false
             },
             layout: {
                 images: []

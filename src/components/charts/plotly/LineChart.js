@@ -33,7 +33,8 @@ class LineChart extends React.Component {
                 }
             },
             config: {
-                responsive: true
+                responsive: true,
+                displaylogo: false
             },
             height: (typeof this.props.height === "undefined") ? "450px" : this.props.height
         }
@@ -182,10 +183,7 @@ class LineChart extends React.Component {
       
         //update chart title
         if(title !== undefined){
-            let orientation = "v";
-            if(window.innerWidth < 960){
-                orientation = "h";
-            }
+            let orientation = window.innerWidth <= 960 ? 'h': "v";
 
             this.setState({
                 layout: {
@@ -211,7 +209,8 @@ class LineChart extends React.Component {
                         tickfont: {
                             family: primaryFont
                         }
-                    }
+                    },
+                    margin: { t: 0, b: 20, l: 0, r: 0 }
                 }
             });
         }

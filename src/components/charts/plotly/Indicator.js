@@ -29,6 +29,7 @@ class Indicator extends React.Component {
     loadIndicator(){
         let value = this.props.value;
         let reference = this.props.reference;
+        let windowWidth = window.innerWidth;
 
         var data = [
             {
@@ -37,6 +38,7 @@ class Indicator extends React.Component {
               value: value,
               delta: { position: "top", reference: reference },
               domain: { x: [0, 1], y: [0, 1] },
+              number: { font: { size: windowWidth <= 480 ? 50 : 80 } },
               title: { text: this.props.title }
             }
         ];
@@ -45,9 +47,23 @@ class Indicator extends React.Component {
             margin: { t: 0, b: 0, l: 0, r: 0 }
         };
 
+        var config = {
+            responsive: true,
+            displaylogo: false
+        };
+
+        var style = {
+            width:"100%", 
+            maxWidth: "420px", 
+            minHeight: windowWidth <= 480 ? "150px" : "220px", 
+            margin: "0 auto" 
+        }
+
         this.setState({
             data: data,
-            layout: layout
+            layout: layout,
+            config: config,
+            style: style
         });
     }
 
@@ -56,7 +72,8 @@ class Indicator extends React.Component {
             <Plot 
                 data={this.state.data}
                 layout={this.state.layout}
-                style={{ width:"100%", maxWidth: "420px", minHeight: "220px", margin: "0 auto" }}
+                config={this.state.config}
+                style={this.state.style}
             /> 
         );
     }

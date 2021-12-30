@@ -44,7 +44,7 @@ class ShotChart extends React.Component {
 
     constructor(props) {
         let margins = 10;
-        let width = 600;
+        let width = window.innerWidth <= 480 ? window.innerWidth - (margins * 6) : 600;
         let height = width * (470 + 2 * margins) / (500 + 2 * margins);
 
         super(props);
@@ -69,7 +69,6 @@ class ShotChart extends React.Component {
                     ticks: '',
                     showticklabels: false,
                     fixedrange: true,
-                    //range: [-52.5, 417.5]
                     range: [-62.5, 427.5]
                 },
                 xaxis: {
@@ -79,7 +78,6 @@ class ShotChart extends React.Component {
                     ticks: '',
                     showticklabels: false,
                     fixedrange: true,
-                    //range: [-250, 250]
                     range: [-260, 260]
                 },
                 legend: {
@@ -204,7 +202,8 @@ class ShotChart extends React.Component {
                 ]
             },
             config: {
-                responsive: true
+                responsive: true,
+                displaylogo: false
             }
         }
     }

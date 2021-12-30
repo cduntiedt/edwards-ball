@@ -68,7 +68,7 @@ class Home extends React.Component {
             <Grid container spacing={1}>
                 {/* player profile card */}
                 {this.props.players.map(player => {
-                    return <Grid item sm={12} md={6} key={player['PERSON_ID']} >
+                    return <Grid item xs={12} sm={12} md={6} key={player['PERSON_ID']} >
                         <PlayerProfileCard player={player} />
                     </Grid>
                 })}

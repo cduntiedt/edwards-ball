@@ -12,13 +12,16 @@ class NavBar extends React.Component {
         super(props);
         this.state = {  }
     }
+
     render() { 
+        let variant = window.innerWidth <= 480 ? 'h5' : 'h3';
+
         return ( 
             <div>
                 <AppBar style={{background: "linear-gradient(90deg, rgb(12, 35, 64) 45%, rgb(29,17,96) 55%)"}} >
                     <Toolbar style={{margin: '0 auto'}}>
                         <Link href='#' color="inherit">
-                            <Typography variant="h3"  >
+                            <Typography variant={variant}  >
                                 Antman <span style={{fontFamily: primaryFont }}>vs</span> LaMelo
                             </Typography>
                         </Link>
